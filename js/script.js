@@ -162,76 +162,139 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---------- Hero canvas: subtle molecular network ---------- */
+  /* ---------- Hero canvas: interactive circular DNA helix ----------
+     A double helix bent into a closed ring (a torus knot) — reads as
+     plasmid-style circular DNA, the molecule biotech R&D actually
+     engineers. Auto-rotates; tilts toward the cursor for parallax. */
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H, nodes = [];
-  const NODE_COUNT = 55;
-  const mouse = { x: null, y: null };
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const TURNS = 14;        // helix twists around the ring
+  const POINTS = 220;      // ring resolution
+  const STEP = 6;          // sampling step for rungs / nucleotide markers
+  const BASE_TILT = 1.1;   // fixed viewing angle, radians
+
+  let W, H, cx, cy, ringRadius, tubeRadius, maxDepth;
+  const tilt = { x: 0, y: 0 };
+  const targetTilt = { x: 0, y: 0 };
+  let spin = 0;
 
   function resizeCanvas(){
     W = canvas.width = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
+    cx = W / 2;
+    cy = H / 2;
+    ringRadius = Math.min(W, H) * 0.3;
+    tubeRadius = ringRadius * 0.16;
+    maxDepth = ringRadius + tubeRadius;
   }
-  function initNodes(){
-    nodes = Array.from({length: NODE_COUNT}, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-      r: Math.random() * 1.6 + 0.8
-    }));
+
+  function helixPoint(theta, phaseOffset){
+    const phi = theta * TURNS + phaseOffset;
+    const r = ringRadius + tubeRadius * Math.cos(phi);
+    return { x: r * Math.cos(theta), y: tubeRadius * Math.sin(phi), z: r * Math.sin(theta) };
   }
-  function drawFrame(){
-    ctx.clearRect(0, 0, W, H);
-    nodes.forEach(n => {
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    });
-    for (let i = 0; i < nodes.length; i++){
-      for (let j = i + 1; j < nodes.length; j++){
-        const a = nodes[i], b = nodes[j];
-        const d = Math.hypot(a.x - b.x, a.y - b.y);
-        const maxD = 140;
-        if (d < maxD){
-          ctx.strokeStyle = `rgba(255,255,255,${(1 - d / maxD) * 0.18})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
+
+  function rotate(x, y, z, rx, ry){
+    const y1 = y * Math.cos(rx) - z * Math.sin(rx);
+    const z1 = y * Math.sin(rx) + z * Math.cos(rx);
+    const x2 = x * Math.cos(ry) + z1 * Math.sin(ry);
+    const z2 = -x * Math.sin(ry) + z1 * Math.cos(ry);
+    return { x: x2, y: y1, z: z2 };
+  }
+
+  function project(p){
+    return { sx: cx + p.x, sy: cy + p.y, z: p.z };
+  }
+
+  function depthAlpha(z, base){
+    const t = Math.max(0, Math.min(1, (z + maxDepth) / (2 * maxDepth)));
+    return base * (0.22 + 0.65 * t);
+  }
+
+  function strokeStrand(points, colorRGB, baseAlpha){
+    ctx.lineWidth = 1.6;
+    let bucket = null;
+    for (let i = 0; i < points.length - 1; i++){
+      const z = (points[i].z + points[i + 1].z) / 2;
+      const alpha = depthAlpha(z, baseAlpha);
+      const nextBucket = Math.round(alpha * 24);
+      if (nextBucket !== bucket){
+        if (bucket !== null) ctx.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${colorRGB},${alpha.toFixed(3)})`;
+        const p0 = project(points[i]);
+        ctx.moveTo(p0.sx, p0.sy);
+        bucket = nextBucket;
       }
-      if (mouse.x !== null){
-        const d = Math.hypot(nodes[i].x - mouse.x, nodes[i].y - mouse.y);
-        if (d < 160){
-          ctx.strokeStyle = `rgba(255,255,255,${(1 - d / 160) * 0.35})`;
-          ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
+      const p1 = project(points[i + 1]);
+      ctx.lineTo(p1.sx, p1.sy);
+    }
+    ctx.stroke();
+  }
+
+  function drawHelix(){
+    ctx.clearRect(0, 0, W, H);
+
+    tilt.x += (targetTilt.x - tilt.x) * 0.045;
+    tilt.y += (targetTilt.y - tilt.y) * 0.045;
+    if (!reduceMotion) spin += 0.0016;
+
+    const rx = BASE_TILT + tilt.x;
+    const ry = spin + tilt.y;
+
+    const strandA = [], strandB = [];
+    for (let i = 0; i <= POINTS; i++){
+      const theta = (i / POINTS) * Math.PI * 2;
+      const a = helixPoint(theta, 0);
+      const b = helixPoint(theta, Math.PI);
+      strandA.push(rotate(a.x, a.y, a.z, rx, ry));
+      strandB.push(rotate(b.x, b.y, b.z, rx, ry));
+    }
+
+    for (let i = 0; i < POINTS; i += STEP){
+      const a = strandA[i], b = strandB[i];
+      const pa = project(a), pb = project(b);
+      ctx.strokeStyle = `rgba(210,210,218,${depthAlpha((a.z + b.z) / 2, 0.28).toFixed(3)})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pa.sx, pa.sy);
+      ctx.lineTo(pb.sx, pb.sy);
+      ctx.stroke();
+    }
+
+    strokeStrand(strandA, '255,255,255', 0.95);
+    strokeStrand(strandB, '150,150,160', 0.95);
+
+    function drawMarkers(points, colorRGB){
+      for (let i = 0; i < points.length; i += STEP){
+        const p = project(points[i]);
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${colorRGB},${depthAlpha(points[i].z, 0.95).toFixed(3)})`;
+        ctx.fill();
       }
     }
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.fill();
-    });
-    requestAnimationFrame(drawFrame);
+    drawMarkers(strandA, '255,255,255');
+    drawMarkers(strandB, '190,190,198');
+
+    if (!reduceMotion) requestAnimationFrame(drawHelix);
   }
+
   resizeCanvas();
-  initNodes();
-  drawFrame();
-  window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
-  canvas.addEventListener('mousemove', e => {
+  drawHelix();
+  window.addEventListener('resize', resizeCanvas);
+
+  window.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+    if (rect.height === 0) return;
+    const nx = Math.max(-1, Math.min(1, (e.clientX - rect.left - cx) / cx));
+    const ny = Math.max(-1, Math.min(1, (e.clientY - rect.top - cy) / cy));
+    targetTilt.y = nx * 0.5;
+    targetTilt.x = -ny * 0.35;
   });
-  canvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+  window.addEventListener('mouseleave', () => { targetTilt.x = 0; targetTilt.y = 0; });
 
   /* ================================================================
      Client-side fallback simulation engine — mirrors server.py so the
