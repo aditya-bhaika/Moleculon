@@ -30,6 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('scroll', updateHeaderMode, {passive:true});
   updateHeaderMode();
 
+  /* ---------- Active-section indicator in the nav ---------- */
+  const navLinkMap = {};
+  document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    navLinkMap[id] = a;
+  });
+  const navSectionIds = Object.keys(navLinkMap);
+  function updateActiveNav(){
+    const y = window.scrollY + 140;
+    let current = null;
+    navSectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= y) current = id;
+    });
+    navSectionIds.forEach(id => navLinkMap[id].classList.toggle('active', id === current));
+  }
+  document.addEventListener('scroll', updateActiveNav, {passive:true});
+  updateActiveNav();
+
   /* ---------- Mobile nav toggle ---------- */
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
