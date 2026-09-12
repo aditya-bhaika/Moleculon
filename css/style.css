@@ -67,7 +67,9 @@ input,textarea{font-family:inherit;}
 .nav-cta{
   background:var(--charcoal);color:var(--white)!important;
   padding:7px 16px;border-radius:980px;font-size:12px;
+  transition:background .3s var(--ease), color .3s var(--ease);
 }
+#site-header.dark-mode .nav-cta{background:var(--white);color:var(--black)!important;}
 #nav-toggle{display:none;flex-direction:column;gap:4px;width:24px;position:relative;z-index:1001;}
 #nav-toggle span{height:2px;background:var(--charcoal);border-radius:2px;transition:transform .3s var(--ease),opacity .3s var(--ease);}
 #site-header.dark-mode #nav-toggle span{background:var(--white);}
