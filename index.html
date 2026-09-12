@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moleculon — AI-Run Clinical Trial Operations &amp; Medicine Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header id="site-header">
+  <nav class="nav-wrap">
+    <a href="#home" class="brand">
+      <span class="brand-dot"></span>Moleculon
+    </a>
+    <button id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#problem" class="nav-link">Problem</a></li>
+      <li><a href="#solution" class="nav-link">Platform</a></li>
+      <li><a href="#wedge" class="nav-link">Product</a></li>
+      <li><a href="#demo" class="nav-link">Demos</a></li>
+      <li><a href="#market" class="nav-link">Market</a></li>
+      <li><a href="#roadmap" class="nav-link">Roadmap</a></li>
+      <li><a href="#contact" class="nav-link nav-cta">Get in touch</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <p class="eyebrow reveal">Health &amp; Life Sciences · Biotech R&amp;D</p>
+      <h1 class="hero-title">
+        <span class="reveal" style="--d:0">Moleculon</span>
+      </h1>
+      <p class="hero-sub reveal" style="--d:1">
+        One AI agent, two connected jobs: running clinical trials with far less friction,
+        and discovering the medicines that don't exist yet.
+      </p>
+      <div class="hero-actions reveal" style="--d:2">
+        <a href="#solution" class="btn btn-primary">Explore the platform</a>
+        <a href="#demo" class="btn btn-ghost">Try the live demos →</a>
+      </div>
+    </div>
+    <div class="scroll-cue reveal" style="--d:3">
+      <span>Scroll</span>
+      <div class="scroll-line"><i></i></div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem" class="section dark">
+    <div class="container">
+      <p class="kicker reveal">The problem</p>
+      <h2 class="section-title reveal">Clinical research runs on twenty-year-old paperwork.</h2>
+      <p class="section-lead reveal">
+        Cities with major hospitals and universities host most of the world's clinical trials and
+        early drug research — yet both stages are still slow, manual, and expensive enough that
+        entire diseases go untreated simply because no one can afford to look for the cure.
+      </p>
+
+      <div class="stat-grid">
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="19" data-prefix="$" data-suffix="M">0</span>
+          <p class="stat-label">Median cost of a pivotal Phase III trial — up to $33M</p>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="80" data-suffix="%+">0</span>
+          <p class="stat-label">Of trials miss their original enrollment timeline</p>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="50" data-suffix="%">0</span>
+          <p class="stat-label">Of trial sites fail to enroll enough patients — 1 in 10 enrolls no one</p>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="644" data-suffix=" pg">0</span>
+          <p class="stat-label">Median length of a final clinical study report — 3–6 months to draft</p>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="66" data-suffix="%">0</span>
+          <p class="stat-label">Of pharmacovigilance teams still operate reactively, not proactively</p>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-num" data-target="800" data-prefix="$" data-suffix="K/day">0</span>
+          <p class="stat-label">Estimated lost future sales for every day a Phase III trial slips</p>
+        </div>
+      </div>
+      <p class="section-footnote reveal">
+        Sources: Tufts CSDD, Power, DataAlly, IntuitionLabs, PMC — see full memo for citations.
+      </p>
+    </div>
+  </section>
+
+  <!-- SOLUTION / TWO PILLARS -->
+  <section id="solution" class="section">
+    <div class="container">
+      <p class="kicker reveal">The platform</p>
+      <h2 class="section-title reveal">Two jobs. One agent. One connected loop.</h2>
+      <p class="section-lead reveal">
+        Moleculon reads unstructured clinical reality — case narratives, protocols, molecular
+        structures — and turns it into structured, auditable, human-checked decisions.
+      </p>
+
+      <div class="pillar-tabs reveal">
+        <button class="pillar-tab active" data-pillar="ops">Operations</button>
+        <button class="pillar-tab" data-pillar="research">Research</button>
+      </div>
+
+      <div class="pillar-panels">
+        <div class="pillar-panel active" id="panel-ops">
+          <div class="pillar-grid">
+            <div class="pillar-visual">
+              <div class="orbit-graphic" data-mode="ops">
+                <div class="orbit-core">AE</div>
+                <div class="orbit-ring r1"><span class="orbit-node">Triage</span></div>
+                <div class="orbit-ring r2"><span class="orbit-node">Deviations</span></div>
+                <div class="orbit-ring r3"><span class="orbit-node">Matching</span></div>
+                <div class="orbit-ring r4"><span class="orbit-node">Reports</span></div>
+              </div>
+            </div>
+            <div class="pillar-text">
+              <h3>Running the trial, at machine speed.</h3>
+              <p>When a patient gets sick, Moleculon reads the case report, judges seriousness and
+                 causality, and drafts the required regulatory report — cutting a process that takes
+                 days down to hours, with a full audit trail of what it saw and decided.</p>
+              <ul class="check-list">
+                <li>Adverse event triage, MedDRA coding &amp; E2B-format reporting</li>
+                <li>Protocol deviation monitoring against source documents</li>
+                <li>Matching local patients to trials they actually qualify for</li>
+                <li>Drafting the 600+ page final reports every trial needs before approval</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar-panel" id="panel-research">
+          <div class="pillar-grid">
+            <div class="pillar-visual">
+              <div class="orbit-graphic" data-mode="research">
+                <div class="orbit-core">Rx</div>
+                <div class="orbit-ring r1"><span class="orbit-node">Simulate</span></div>
+                <div class="orbit-ring r2"><span class="orbit-node">Score</span></div>
+                <div class="orbit-ring r3"><span class="orbit-node">Rank</span></div>
+                <div class="orbit-ring r4"><span class="orbit-node">Shortlist</span></div>
+              </div>
+            </div>
+            <div class="pillar-text">
+              <h3>Finding medicines that don't exist yet.</h3>
+              <p>For diseases with no current treatment, Moleculon runs computer simulations of how
+                 candidate biological reagents might behave against a disease before any lab or
+                 patient testing begins — exploring far more compounds than time and lab budgets
+                 would normally allow.</p>
+              <ul class="check-list">
+                <li>In-silico screening of thousands of candidate compounds</li>
+                <li>Narrowing to the handful most likely to become a working medicine</li>
+                <li>Moving promising candidates toward trials faster</li>
+                <li>Built to sit on top of existing lab-research infrastructure, not replace it</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEDGE / WORKFLOW -->
+  <section id="wedge" class="section dark">
+    <div class="container">
+      <p class="kicker reveal">The wedge</p>
+      <h2 class="section-title reveal">Start narrow. Prove it. Expand.</h2>
+      <p class="section-lead reveal">
+        Adverse event triage is the beachhead: the most standardized workflow, hard regulatory
+        deadlines, and budget every sponsor already has allocated. Everything else expands from there.
+      </p>
+
+      <div class="timeline-wrap reveal">
+        <div class="timeline-track">
+          <div class="timeline-fill" id="timeline-fill"></div>
+        </div>
+        <div class="timeline-steps">
+          <div class="timeline-step active" data-step="1">
+            <span class="step-num">01</span>
+            <h4>Adverse Event Triage</h4>
+            <p>Ingest case documents, draft MedDRA coding &amp; seriousness assessment, flag ambiguity for human review.</p>
+          </div>
+          <div class="timeline-step" data-step="2">
+            <span class="step-num">02</span>
+            <h4>Protocol Deviation Monitoring</h4>
+            <p>Read unstructured site documentation against protocol requirements, same underlying capability, same buyer.</p>
+          </div>
+          <div class="timeline-step" data-step="3">
+            <span class="step-num">03</span>
+            <h4>Patient Recruitment</h4>
+            <p>Match local patients against eligibility criteria buried in EHR notes — the industry's hardest bottleneck.</p>
+          </div>
+          <div class="timeline-step" data-step="4">
+            <span class="step-num">04</span>
+            <h4>Submission Drafting</h4>
+            <p>Draft the CTD Module 2 summaries and final clinical study reports that sit on the critical path to filing.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-footnote reveal">
+        From "a better AE triage tool" to "an operations layer that runs your trial" — cross-module
+        data creates a moat a single-function competitor can't replicate.
+      </p>
+    </div>
+  </section>
+
+  <!-- LIVE DEMOS -->
+  <section id="demo" class="section">
+    <div class="container">
+      <p class="kicker reveal">Try it</p>
+      <h2 class="section-title reveal">Two interactive, simulated demos.</h2>
+      <p class="section-lead reveal">
+        These call a small Python backend running locally — illustrative simulations of how each
+        side of Moleculon behaves, not real medical or regulatory output.
+      </p>
+
+      <div class="demo-grid">
+        <!-- Research demo -->
+        <div class="demo-card reveal">
+          <h3>Research Engine — Candidate Screening</h3>
+          <p class="demo-desc">Simulate narrowing a pool of candidate compounds down to the handful worth testing in the lab.</p>
+          <div class="demo-controls">
+            <label for="candidateRange">Candidate compounds to screen</label>
+            <input type="range" id="candidateRange" min="100" max="50000" value="5000" step="100">
+            <span id="candidateValue" class="range-value">5,000</span>
+          </div>
+          <button class="btn btn-primary btn-block" id="runScreen">Run simulation</button>
+          <div class="demo-output" id="screenOutput"></div>
+        </div>
+
+        <!-- Ops demo -->
+        <div class="demo-card reveal">
+          <h3>Operations Engine — Adverse Event Triage</h3>
+          <p class="demo-desc">Describe a case narrative the way a site might report it, and see a simulated triage draft.</p>
+          <div class="demo-controls">
+            <label for="caseText">Case narrative</label>
+            <textarea id="caseText" rows="3" placeholder="e.g. Patient reported severe headache and shortness of breath requiring hospitalization two days after dosing.">Patient reported severe headache and shortness of breath requiring hospitalization two days after dosing.</textarea>
+            <div class="checkbox-row">
+              <label><input type="checkbox" class="serious-flag" value="hospitalization" checked> Hospitalization</label>
+              <label><input type="checkbox" class="serious-flag" value="life_threatening"> Life-threatening</label>
+              <label><input type="checkbox" class="serious-flag" value="disability"> Disability</label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" id="runTriage">Analyze case</button>
+          <div class="demo-output" id="triageOutput"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NOW -->
+  <section class="section dark">
+    <div class="container">
+      <p class="kicker reveal">Why now</p>
+      <h2 class="section-title reveal">Three things changed at once.</h2>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <span class="why-num">01</span>
+          <h4>The models got good enough</h4>
+          <p>TrialGPT already shows 87% criterion-level accuracy on trial matching and cuts manual
+             screening time by 40%+. Novartis has generated 10,000+ clinical documents with AI across
+             150+ trials.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-num">02</span>
+          <h4>The regulator gave a framework</h4>
+          <p>FDA CDER published draft AI guidance in Jan 2025, stood up an AI Council in 2024, and
+             issued 10 joint FDA–EMA AI principles in Jan 2026 — a risk-based framework that promotes
+             innovation, not a moratorium.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-num">03</span>
+          <h4>The vendor landscape stopped short</h4>
+          <p>Recruitment tools like Deep 6 AI and Antidote stop at matching. Safety-database
+             incumbents bolt AI onto decades-old systems. No one owns the connective tissue across
+             all four operational functions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET -->
+  <section id="market" class="section">
+    <div class="container">
+      <p class="kicker reveal">Market</p>
+      <h2 class="section-title reveal">A trillion-dollar industry, still running on headcount.</h2>
+
+      <div class="bar-chart reveal">
+        <div class="bar-row">
+          <span class="bar-label">CRO services market (2025 → 2033)</span>
+          <div class="bar-track"><div class="bar-fill" data-width="55" data-end="$83B+"><span class="bar-start">$45.3B</span></div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Medical writing market (2025 → 2030)</span>
+          <div class="bar-track"><div class="bar-fill" data-width="43" data-end="$8.4B"><span class="bar-start">$3.6B</span></div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Phase III enrollment period (2011 → 2019)</span>
+          <div class="bar-track"><div class="bar-fill" data-width="72" data-end="18 mo"><span class="bar-start">13 mo</span></div></div>
+        </div>
+      </div>
+
+      <div class="market-notes">
+        <div class="reveal">
+          <h4>Business model</h4>
+          <p>Pricing tracks value, not seats: a per-trial platform fee layered with per-case /
+             per-document usage for the AE-triage and drafting modules — mirroring how CROs and
+             safety-database vendors already price.</p>
+        </div>
+        <div class="reveal">
+          <h4>Go-to-market</h4>
+          <p>Land-and-expand: one function, one trial, inside a mid-size biotech or a CRO looking to
+             differentiate — then expand on hard before/after numbers to more trials, modules, and
+             eventually enterprise-wide deployment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="section dark impact">
+    <div class="container">
+      <p class="kicker reveal">Impact</p>
+      <blockquote class="impact-quote reveal">
+        "Even modest gains in early screening accuracy mean new medicines reaching patients
+        <span class="highlight">years sooner.</span>"
+      </blockquote>
+      <div class="impact-grid">
+        <div class="reveal"><h4>Patients</h4><p>Faster access to treatments and vaccines — including for diseases with no effective medicine today.</p></div>
+        <div class="reveal"><h4>Researchers</h4><p>A faster, cheaper way to test compounds before committing to expensive lab and trial work.</p></div>
+        <div class="reveal"><h4>Hospitals</h4><p>Less staff time lost to paperwork, freeing clinical staff for direct patient care.</p></div>
+        <div class="reveal"><h4>Cities</h4><p>A stronger biotech and clinical-trial ecosystem that attracts research investment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap" class="section">
+    <div class="container">
+      <p class="kicker reveal">Execution plan</p>
+      <h2 class="section-title reveal">Two pilots, real data, one year.</h2>
+
+      <div class="vtimeline">
+        <div class="vtimeline-line"></div>
+
+        <div class="vtimeline-item reveal">
+          <div class="vdot"></div>
+          <div class="vcontent">
+            <h4>Phase 1 — Narrow &amp; prove</h4>
+            <p>Build and pilot the safety-report agent with one hospital or research partner using
+               real, anonymized trial data. Prove it cuts review time and produces a reliable,
+               human-checked record.</p>
+          </div>
+        </div>
+        <div class="vtimeline-item reveal">
+          <div class="vdot"></div>
+          <div class="vcontent">
+            <h4>Phase 1 (parallel) — Research proof point</h4>
+            <p>Begin the simulation-research tool with a university lab studying a disease with no
+               current treatment, so both halves of Moleculon have real-world proof points early.</p>
+          </div>
+        </div>
+        <div class="vtimeline-item reveal">
+          <div class="vdot"></div>
+          <div class="vcontent">
+            <h4>Phase 2 — Expand on evidence</h4>
+            <p>Use before-and-after numbers from both pilots to expand to more trials, hospitals, and
+               disease-research partners citywide.</p>
+          </div>
+        </div>
+        <div class="vtimeline-item reveal">
+          <div class="vdot"></div>
+          <div class="vcontent">
+            <h4>Throughout — Partner, don't replace</h4>
+            <p>Integrate with existing safety-database and lab-research providers rather than
+               replacing systems outright. Keep a human expert in the loop at every step.</p>
+          </div>
+        </div>
+        <div class="vtimeline-item reveal">
+          <div class="vdot vdot-end"></div>
+          <div class="vcontent">
+            <h4>Year one goal</h4>
+            <p>One validated pilot on each side of Moleculon, ready to expand citywide.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK / COMPETITION ACCORDION -->
+  <section class="section dark">
+    <div class="container">
+      <p class="kicker reveal">Competition &amp; risk</p>
+      <h2 class="section-title reveal">The honest view.</h2>
+
+      <div class="accordion reveal">
+        <div class="accordion-item">
+          <button class="accordion-head">
+            <span>Incumbents moving fast</span><span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Veeva, Oracle Argus, IQVIA and ArisGlobal have the client relationships and compliance
+               credibility to bolt on agentic features before a new entrant builds a comparable data
+               moat. The counter: legacy schemas and workflows built around individual steps make
+               incumbents structurally slow to rebuild around agent-native architecture.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-head">
+            <span>Regulatory tightening</span><span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>FDA's AI framework is still a draft and could tighten. This argues for building an
+               unusually strong audit-trail and explainability layer from the start — a cost early,
+               a moat later.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-head">
+            <span>Trust &amp; liability</span><span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Pharma is a conservative buyer when errors carry patient-safety consequences. This is
+               the strongest argument for human-in-the-loop design and for launching with a partner
+               willing to co-develop and publicly validate the product.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <p class="kicker reveal">Get in touch</p>
+      <h2 class="section-title reveal">Let's build the pilot.</h2>
+      <p class="section-lead reveal">Hospitals, research labs, and CROs interested in a design
+         partnership — reach out below.</p>
+
+      <form id="contactForm" class="contact-form reveal">
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Full name" required>
+          <input type="email" name="email" placeholder="Email address" required>
+        </div>
+        <input type="text" name="org" placeholder="Hospital / lab / CRO">
+        <textarea name="message" rows="4" placeholder="Tell us about your trial or research program"></textarea>
+        <button type="submit" class="btn btn-primary btn-block">Send message</button>
+        <p class="form-status" id="formStatus"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© 2026 Moleculon. Concept site for illustrative purposes.</span>
+    <span>Built with HTML, CSS, JavaScript &amp; Python.</span>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
