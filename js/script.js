@@ -3,7 +3,8 @@
 // ===================================================================
 document.addEventListener('DOMContentLoaded', () => {
 
-  const API_BASE = window.location.origin;
+  const configuredApiBase = document.querySelector('meta[name="api-base"]')?.content.trim();
+  const API_BASE = configuredApiBase ? configuredApiBase.replace(/\/$/, '') : window.location.origin;
 
   /* ---------- Scroll progress bar ---------- */
   const progressBar = document.getElementById('progress-bar');

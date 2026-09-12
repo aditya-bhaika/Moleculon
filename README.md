@@ -28,11 +28,16 @@ simulation automatically if it's not reachable.
 ## Running locally with the Flask backend
 
 ```bash
-pip install flask
+python -m pip install -r requirements.txt
 python server.py
 ```
 
 Then open http://127.0.0.1:5000.
+
+The Flask API exposes `POST /api/screen`, `POST /api/triage`, `POST /api/contact`,
+and `GET /api/health`. The front end uses the same-origin API by default. To host
+the API separately from the site, set the `api-base` meta tag in `index.html` to
+the API's public URL and allow the front-end origin with `CORS_ORIGINS`.
 
 ## Structure
 

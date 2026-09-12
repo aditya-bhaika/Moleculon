@@ -15,18 +15,44 @@ Then open http://127.0.0.1:5000
 
 import json
 import math
+import os
 import random
 import string
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, abort, jsonify, request, send_from_directory
 
 ROOT = Path(__file__).parent.resolve()
 DATA_DIR = ROOT / "data"
 LEADS_FILE = DATA_DIR / "leads.json"
 
 app = Flask(__name__, static_folder=None)
+
+# Add a deployed front-end URL here (or via CORS_ORIGINS) when the API is
+# hosted separately from the static site.
+ALLOWED_ORIGINS = {
+    "http://127.0.0.1:5000",
+    "http://localhost:5000",
+    "https://aditya-bhaika.github.io",
+}
+ALLOWED_ORIGINS.update(
+    origin.strip().rstrip("/")
+    for origin in os.environ.get("CORS_ORIGINS", "").split(",")
+    if origin.strip()
+)
+
+
+@app.after_request
+def add_cors_headers(response):
+    """Allow the configured site to call the API when it is hosted elsewhere."""
+    origin = request.headers.get("Origin", "").rstrip("/")
+    if origin in ALLOWED_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        response.headers["Vary"] = "Origin"
+    return response
 
 # ---------------------------------------------------------------------------
 # Static file serving
@@ -39,7 +65,20 @@ def index():
 
 @app.route("/<path:filename>")
 def static_files(filename):
+    # Do not expose lead submissions or backend source through the static route.
+    allowed_extensions = {".css", ".js", ".ico", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"}
+    if Path(filename).suffix.lower() not in allowed_extensions:
+        abort(404)
     return send_from_directory(ROOT, filename)
+
+
+# ---------------------------------------------------------------------------
+# API
+# ---------------------------------------------------------------------------
+
+@app.route("/api/health")
+def health():
+    return jsonify({"status": "ok", "service": "Moleculon demo API"})
 
 
 # ---------------------------------------------------------------------------
@@ -59,7 +98,13 @@ def _compound_id(rng: random.Random) -> str:
 @app.route("/api/screen", methods=["POST"])
 def screen_candidates():
     payload = request.get_json(silent=True) or {}
-    candidates = int(payload.get("candidates", 5000))
+    if not isinstance(payload, dict):
+        return jsonify({"error": "JSON object expected"}), 400
+
+    try:
+        candidates = int(payload.get("candidates", 5000))
+    except (TypeError, ValueError):
+        return jsonify({"error": "candidates must be a whole number"}), 400
     candidates = max(100, min(candidates, 200_000))
 
     rng = random.Random()
@@ -112,8 +157,16 @@ SERIOUSNESS_LABELS = {
 @app.route("/api/triage", methods=["POST"])
 def triage_case():
     payload = request.get_json(silent=True) or {}
-    text = (payload.get("text") or "").lower().strip()
+    if not isinstance(payload, dict):
+        return jsonify({"error": "JSON object expected"}), 400
+
+    raw_text = payload.get("text") or ""
+    if not isinstance(raw_text, str):
+        return jsonify({"error": "text must be a string"}), 400
+    text = raw_text.lower().strip()
     flags = payload.get("flags") or []
+    if not isinstance(flags, list) or not all(isinstance(flag, str) for flag in flags):
+        return jsonify({"error": "flags must be an array of strings"}), 400
 
     if any(f in SERIOUSNESS_LABELS for f in flags):
         seriousness = next(SERIOUSNESS_LABELS[f] for f in flags if f in SERIOUSNESS_LABELS)
@@ -155,8 +208,15 @@ def triage_case():
 @app.route("/api/contact", methods=["POST"])
 def contact():
     payload = request.get_json(silent=True) or {}
-    name = (payload.get("name") or "").strip()
-    email = (payload.get("email") or "").strip()
+    if not isinstance(payload, dict):
+        return jsonify({"error": "JSON object expected"}), 400
+
+    def text_value(key):
+        value = payload.get(key) or ""
+        return value.strip() if isinstance(value, str) else ""
+
+    name = text_value("name")
+    email = text_value("email")
 
     if not name or not email:
         return jsonify({"error": "name and email are required"}), 400
@@ -172,8 +232,8 @@ def contact():
     leads.append({
         "name": name,
         "email": email,
-        "org": (payload.get("org") or "").strip(),
-        "message": (payload.get("message") or "").strip(),
+        "org": text_value("org"),
+        "message": text_value("message"),
         "received_at": datetime.now(timezone.utc).isoformat(),
     })
     LEADS_FILE.write_text(json.dumps(leads, indent=2), encoding="utf-8")
@@ -182,4 +242,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=os.environ.get("FLASK_DEBUG") == "1")
