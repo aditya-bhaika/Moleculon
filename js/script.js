@@ -33,8 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Mobile nav toggle ---------- */
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
-  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+  }));
 
   /* ---------- Instantly reveal a section's content on any anchor jump ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
